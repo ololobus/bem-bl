@@ -1032,7 +1032,7 @@ var DOM = BEM.DOM = BEM.decl('i-bem__dom',/** @lends BEM.DOM.prototype */{
         if(!ctx || $.isFunction(ctx)) {
             callbackCtx = callback;
             callback = ctx;
-            ctx = doc;
+            ctx = this.scope;
         }
 
         var uniqInitId = $.identify();
@@ -1183,7 +1183,7 @@ var DOM = BEM.DOM = BEM.decl('i-bem__dom',/** @lends BEM.DOM.prototype */{
 
             if(!storage) {
                 storage = liveClassEventStorage[e] = {};
-                doc.bind(e, _this.changeThis(_this._liveClassTrigger, _this));
+                _this.scope.bind(e, _this.changeThis(_this._liveClassTrigger, _this));
             }
 
             storage = storage[className] || (storage[className] = { uniqIds : {}, fns : [] });
