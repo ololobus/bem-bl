@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "xjst": "~0.5.1",
-    "ometajs": "~3.2.2",
+    "ometajs": "git://github.com/SevInf/ometa-js.git#d3427cf",
     "dom-js": "~0.0.9"
   },
   "devDependencies": {
