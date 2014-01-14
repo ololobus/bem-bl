@@ -14,12 +14,11 @@ exports.getBuildResultChunk = function(relPath, path, suffix) {
         .then(function(c) {
 
             try {
-                //try to parse BEMHTML. If it fails, bem-tools
-                //will report error with original file offsets.
+                // try to parse BEMHTML. If it fails, bem-tools
+                // will report error with original file offsets.
                 BEMHTML.parse(c);
             } catch (e) {
                 return Q.reject(new Error('Unable to parse ' + path + ': ' + e.message));
-
             }
 
             return [
