@@ -1,8 +1,6 @@
-var bem = require('bem'),
-    borschik = bem.require('borschik'),
-    base = borschik.require('./techs/css-fast.js'),
-    cssp = borschik.require('cssp'),
-    INHERIT = borschik.require('inherit');
+var base = require('borschik/lib/techs/css.js'),
+    parser = require('gonzales'),
+    INHERIT = require('inherit');
 
 
 function modifyRuleset(ruleset, prefix, topmostClasses) {
@@ -55,9 +53,10 @@ function modifySelector(selector, prefix, topmostClasses) {
 }
 
 exports.addPrefix = function addPrefix(source, prefix, topmostClasses) {
-    var tree = cssp.parse(source);
-    tree.forEach(function(elem){ modifyRuleset(elem, prefix, topmostClasses) });
-    return cssp.translate(tree);
+    if (source === '') { return source; }
+    var ast = parser.srcToCSSP(source);
+    ast.map(function(elem){ modifyRuleset(elem, prefix, topmostClasses) });
+    return parser.csspToSrc(ast);
 };
 
 exports.Tech = INHERIT(base.Tech, {
