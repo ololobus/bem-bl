@@ -6,17 +6,17 @@ var base = require('borschik/lib/techs/css.js'),
 function modifyRuleset(ruleset, prefix, topmostClasses) {
     if(!(ruleset instanceof Array)) return;
 
-    if(ruleset[0] == 'atruler')
+    if(ruleset[0] === 'atruler')
         ruleset[3].forEach(function(elem){ modifyRuleset(elem, prefix, topmostClasses) });
 
-    if(ruleset[0] != 'ruleset') return;
+    if(ruleset[0] !== 'ruleset') return;
 
     ruleset[1].forEach(function(elem){ modifySelector(elem, prefix, topmostClasses) });
 };
 
 function modifySelector(selector, prefix, topmostClasses) {
     if(!Array.isArray(selector)) return;
-    if(selector[0] != 'simpleselector') return;
+    if(selector[0] !== 'simpleselector') return;
 
     var selectorType = selector.shift(),
         firstPart = [],
@@ -27,9 +27,9 @@ function modifySelector(selector, prefix, topmostClasses) {
 
         var elem = selector[0],
             elemType = elem[0],
-            isWhitespaceOrComment = elemType == 's' && selector.length != 1 || elemType == 'comment',
-            isTopmostTag = elemType == 'ident' && topmostTags.indexOf(elem[1]) != -1,
-            isTopmostClass = elemType == 'clazz' && topmostClasses.indexOf(elem[1][1]) != -1;
+            isWhitespaceOrComment = elemType === 's' && selector.length !== 1 || elemType === 'comment',
+            isTopmostTag = elemType === 'ident' && topmostTags.indexOf(elem[1]) !== -1,
+            isTopmostClass = elemType === 'clazz' && topmostClasses['body'].indexOf(elem[1][1]) !== -1;
 
         preparationNeeded = isWhitespaceOrComment || isTopmostTag || isTopmostClass;
 
@@ -37,12 +37,13 @@ function modifySelector(selector, prefix, topmostClasses) {
 
     }
 
-    if(selector[0] && (selector[0][0] != 'clazz' || selector[0][1][1] != prefix)) {
-        if(selector.length > 1 || selector.length == 1 && selector[0][0] != 's') {
-            selector.unshift(['s', ' ']);
+    if(selector[0] && (selector[0][0] !== 'clazz' || selector[0][1][1] !== prefix)) {
+        if(selector.length > 1 || selector.length === 1 && selector[0][0] !== 's') {
+            if(topmostClasses['scope'].indexOf(selector[0][1][1]) === -1)
+                selector.unshift(['s', ' ']);
             selector.unshift(['clazz', ['ident', prefix]]);
 
-            if(firstPart.length && firstPart[firstPart.length -1][0] != 's')
+            if(firstPart.length && firstPart[firstPart.length -1][0] !== 's')
                 selector.unshift(['s', ' ']);
         }
     }
